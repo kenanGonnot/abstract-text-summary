@@ -1,0 +1,10 @@
+.idea
+*.iml
+test_tf_serving
+*.xml
+tf_serving
+kubeflow
+manifests
+venv
+LAUNCH.md
+script.sh
