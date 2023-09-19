@@ -10,8 +10,8 @@ long textual documents, capturing the essential meaning and context of the origi
 
 ## Demo:
 
-You can try out my Abstractive Text Summarization model through our [**online demo
-**](http://kenan.gonnot.net/text_summarization).
+You can try out my Abstractive Text Summarization model through my [online demo
+](http://kenan.gonnot.net/text_summarization).
 
 
 
@@ -33,8 +33,36 @@ summarization, and even chatbots to generate coherent responses.
 
 ### How it works
 
-The Abstractive Text Summarization system is built on top of
-the [HuggingFace Transformers](https://huggingface.co/transformers/)
+Abstractive text summarization is an advanced Natural Language Processing (NLP) technique that aims to distill the
+essential meaning and context from a longer text into a concise and coherent summary. Unlike extractive summarization,
+which selects and combines existing sentences from the source text, abstractive summarization involves generating
+entirely new sentences that capture the core information.
+
+#### The process typically involves the following steps:
+
+1. **Text Preprocessing:** The input text undergoes preprocessing to remove noise, tokenize sentences and words, and
+   handle special characters. This ensures the text is in a suitable format for NLP models.
+2. **Model Selection:** Abstractive summarization often utilizes deep learning models, such as Transformer-based architectures,
+   due to their ability to capture complex language patterns. These models are pre-trained on vast corpora of text data,
+   which helps them understand grammar, context, and semantics.
+3. **Fine-tuning (Optional):** In some cases, pre-trained models can be fine-tuned on domain-specific data to enhance their
+   summarization capabilities for particular industries or topics.
+4. **Encoding:** The input text is encoded into a numerical representation that the model can understand. This
+   representation
+   captures the semantic meaning of words and sentences.
+5. **Decoding:** The model decodes the encoded representation to generate a summary. During this step, it predicts and
+   generates words one at a time, considering context and coherence. Beam search or other decoding techniques may be used
+   to improve the quality of generated summaries.
+6. **Evaluation:** The generated summary is evaluated using metrics such as ROUGE (Recall-Oriented Understudy for Gisting
+   Evaluation) to measure its similarity and quality compared to reference summaries or gold standards.
+
+Abstractive text summarization finds applications in various domains, including content curation, document
+summarization, chatbots, and more. It provides a more human-like summarization approach, allowing the creation of
+concise and informative summaries that can be valuable for readers and automation tasks.
+
+> In summary, abstractive text summarization is a sophisticated NLP technique that leverages deep learning models to
+> generate coherent and contextually accurate summaries from longer texts, making it a powerful tool for information
+> extraction and content optimization.
 
 ### Future Enhancements
 
@@ -94,6 +122,7 @@ Environmental manipulation Fruits let their users dramatically alter the environ
 ```
 
 ## Acknowledgments:
+
 We extend our gratitude to the contributors of popular NLP libraries and datasets that have made this project possible.
 
 ## Contact
