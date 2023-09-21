@@ -16,9 +16,16 @@ Two distinct approaches were employed for model training:
     * Fine-tuned Llama-2-7b (7 Billion Parameters)
 * **Dataset:** `XSum`
 * **Training Time:** 2 days
-* **Training Hardware:** 1x NVIDIA RTX 4090 GPU
+* **Training Hardware:** 1x NVIDIA RTX 4090 GPU via [cloud GPU - VAST](https://vast.ai/)
 * **Training Framework:**
     * TensorFlow (Transformer Encoder-Decoder Model)
     * Ludwig (Fine-tuned Llama-2-7b)
-* **Deployment:** Docker, Kubernetes
 ***
+
+## More information about Ludwig and Llama-2-7b
+* [Ludwig](https://ludwig.ai/latest/)
+
+_"Ludwig is a low-code framework for building custom AI models like LLMs and other deep neural networks."_
+
+>You can watch the following videos to learn more about Ludwig and Llama-2-7b:
+>[Video YouTube - Efficient Fine-Tuning for Llama-2-7b on a single GPU](https://www.youtube.com/watch?v=g68qlo9Izf0)

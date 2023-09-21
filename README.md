@@ -91,6 +91,11 @@ concise and informative summaries that can be valuable for readers and automatio
 ## How to use the app
 
 1. Clone the repo
+2. Create a virtual environment
+```bash 
+ python3 -m venv venv
+ source venv/bin/activate 
+```
 2. Install the requirements
 
 ```bash
@@ -127,4 +132,4 @@ We extend our gratitude to the contributors of popular NLP libraries and dataset
 
 ## Contact
 
-* Kenan Gonnot - [linkedin](https://www.linkedin.com/in/kenan-gonnot/)
+* Kenan Gonnot - [linkedin](https://www.linkedin.com/in/kenan-gonnot/) 
