@@ -1,0 +1,40 @@
+model_type: llm
+base_model: huggyllama/llama-7b
+
+input_features:
+  - name: instruction
+    type: text
+
+output_features:
+  - name: output
+    type: text
+
+
+generation:
+  temperature: 0.1
+  max_new_tokens: 512
+
+adapter:
+  type: lora
+
+quantization:
+  bits: 4
+
+trainer:
+  type: finetune
+  epochs: 5
+  batch_size: 1
+  eval_batch_size: 2
+  gradient_accumulation_steps: 16
+  learning_rate: 0.00001
+  optimizer:
+    type: adam
+    params:
+      eps: 1.e-8
+      betas:
+        - 0.9
+        - 0.999
+      weight_decay: 0
+  learning_rate_scheduler:
+    warmup_fraction: 0.03
+    reduce_on_plateau: 0
