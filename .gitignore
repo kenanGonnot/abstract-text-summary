@@ -8,3 +8,8 @@ manifests
 venv
 LAUNCH.md
 script.sh
+/training/.env
+/training/results
+/training/checkpoints
+/training/*.txt
+/training/uploadV2.sh
