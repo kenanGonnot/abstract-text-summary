@@ -13,3 +13,6 @@ script.sh
 /training/checkpoints
 /training/*.txt
 /training/uploadV2.sh
+nb-log/
+training/data/
+*.csv
