@@ -3,6 +3,10 @@ requests==2.21.0
 pandas==1.3.5
 spacy==3.4.1
 transformers==4.18.0
+langdetect==1.0.9
+nltk==3.8.1
+scikit-learn==1.0
 # torch @ https://download.pytorch.org/whl/cpu/torch-1.6.0%2Bcpu-cp36-cp36m-linux_x86_64.whl
 https://download.pytorch.org/whl/cpu/torch-1.6.0%2Bcpu-cp37-cp37m-linux_x86_64.whl
+#torch
 # torch==1.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html

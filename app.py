@@ -4,7 +4,11 @@ import os
 import spacy
 from flask import Flask, jsonify, request
 
-from text_summarization import extractive_summarization, abstractive_summarization
+from text_summarization import extractive_summarization, abstractive_summarization_pipeline, \
+    calculate_cosine_similarity, generate_abstractive_summary
+
+import nltk
+nltk.download("punkt")
 
 spacy.cli.download("en_core_web_sm")
 app = Flask(__name__)
@@ -26,8 +30,10 @@ def extractive_summary():
     else:
         return jsonify("Content-Type must be application/json")
     summary = extractive_summarization(paragraphs)
+    similarity = calculate_cosine_similarity(paragraphs, summary)
     response = {
-        "summary": summary
+        "summary": summary,
+        "similarity": similarity
     }
     return jsonify(response)
 
@@ -40,21 +46,23 @@ def abstractive_summary():
     content_type = request.headers.get('Content-Type')
     if content_type == 'application/json':
         data = request.get_json()
-        data = json.loads(data)
+        # data = json.loads(data)
         paragraphs = data['input_text']
         if paragraphs is [] or paragraphs is None:
             return jsonify("No paragraph found")
     else:
         paragraphs = request.args.get('input_text')
-    model = "JulesBelveze/t5-small-headline-generator"
+    # model = "JulesBelveze/t5-small-headline-generator"
     # model = "thekenken/ludwig-llama7b-summarization"
-    # model = "deep-learning-analytics/wikihow-t5-small"
     # model = "google/pegasus-xsum"
-    # model = "thekenken/text_summarization"
-    framework = "pt" # pytorch or tf (tensorflow)
-    summary = abstractive_summarization(paragraphs, model, framework)
+    model = "thekenken/mt5small-finetuned-summary-en-fr"
+    framework = "pt"  # pytorch or tf (tensorflow)
+    # summary = abstractive_summarization_pipeline(paragraphs, model, framework,  max_length=200, min_length=50)
+    summary = generate_abstractive_summary(model, paragraphs, max_length=150, min_length=50)
+    similarity = calculate_cosine_similarity(paragraphs, summary)
     response = {
-        "summary": summary
+        "summary": summary,
+        "similarity": similarity
     }
     return jsonify(response)
 

@@ -5,9 +5,26 @@ from string import punctuation
 
 import spacy
 from spacy.lang.en import STOP_WORDS
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
 
+from langdetect import detect
 import pandas as pd
+import nltk
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
+def calculate_cosine_similarity(document, summary):
+    # Créez un vecteur TF-IDF à partir du document et du résumé
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_matrix = tfidf_vectorizer.fit_transform([document, summary])
+
+    # Calculez la similarité cosinus entre le document et le résumé
+    cosine_sim = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
+
+    # La similarité cosinus varie de 0 (pas de similarité) à 1 (similitude maximale)
+    return round(cosine_sim[0][0] * 100, 2)
 
 
 def filtering_tokens(documents):
@@ -70,40 +87,76 @@ def extractive_summarization(body):
     return summary
 
 
-def abstractive_summarization(paragraph, model_name, framework="pt"):
+def abstractive_summarization_pipeline(paragraph, model_name, framework="pt", max_length=200, min_length=50):
     start = time.time()
-    # model = "thekenken/text_summarization"
-    # tokenizer = "thekenken/text_summarization"
-    # model = "t5-small"
-    # tokenizer = "t5-small"
     summarizer = pipeline("summarization", model=model_name, tokenizer=model_name, framework=framework)
 
     summary = summarizer(
         paragraph,
-        # raw_datasets["test"][0]["document"],
-        min_length=80,
-        max_length=500,
+        min_length=min_length,
+        max_length=max_length,
     )
 
     end = time.time()
     print("Time : {} seconds".format(end - start))
-    # df = pd.DataFrame({"paragraph": paragraph, "summary": summary[0]['summary_text']}, index=[0])
-    # return df.to_json(orient="records")
     return summary[0]['summary_text']
 
-# from transformers import pipeline
+
+def split_text_into_sentences(text, language="english"):
+    # Découpez le texte en phrases en fonction de la langue
+    if language == "fr":
+        language = "french"
+    if language == "en":
+        language = "english"
+    sentence_splitter = nltk.data.load(f'tokenizers/punkt/{language}.pickle')
+    sentences = sentence_splitter.tokenize(text)
+    return sentences
 
 
-# def extractive_summarization_bt(body):
-#     # use bart in pytorch
-#     # summarizer = pipeline("summarization")
-#     # ptorch = summarizer("An apple a day, keeps the doctor away", min_length=5, max_length=20)
-#
-#     # use t5 in tf
-#     summarizer = pipeline("summarization", model="t5-base", tokenizer="t5-base", framework="tf")
-#     tflow = summarizer(body, min_length=5, max_length=500)
-#     return tflow
-# print(ptorch, tflow)
+def generate_abstractive_summary(hub_model_id, text, max_length=150, min_length=50):
+    tokenizer = AutoTokenizer.from_pretrained(hub_model_id)
+    model = AutoModelForSeq2SeqLM.from_pretrained(hub_model_id)
+    language = detect(text)
+    print("Language: ", language)
+
+    # Découpez le texte en phrases en fonction de la langue
+    sentences = split_text_into_sentences(text, language)
+
+    # Générer un résumé pour chaque phrase
+    summaries = []
+
+    if len(sentences) > 4:
+        # Si le document a plus de 4 phrases, divisez-le en deux parties
+        midpoint = len(sentences) // 2
+        first_half = sentences[:midpoint]
+        second_half = sentences[midpoint:]
+        print("Le document possède plus de 4 phrases: {} phrases".format(len(sentences)))
+
+        for sentences_to_summarize in [first_half, second_half]:
+            summary = model.generate(
+                tokenizer.encode(" ".join(sentences_to_summarize), return_tensors="pt"),
+                max_length=max_length,
+                min_length=20,
+                num_beams=5,  # Augmenter num_beams pour des résumés de meilleure qualité
+                early_stopping=True,  # Assurez-vous que la génération se termine correctement
+            )[0]
+            summaries.append(tokenizer.decode(summary, skip_special_tokens=True))
+    else:
+        # Générez un résumé pour l'ensemble du texte
+        print("Le document possède moins de 4 phrases")
+        summary = model.generate(
+            tokenizer.encode(text, return_tensors="pt"),
+            max_length=max_length,
+            min_length=min_length,
+            num_beams=5,  # Augmenter num_beams pour des résumés de meilleure qualité
+            early_stopping=True,  # Assurez-vous que la génération se termine correctement
+        )[0]
+        summaries.append(tokenizer.decode(summary, skip_special_tokens=True))
+
+    # Concaténez les résumés des phrases (ou des moitiés) pour obtenir le résumé complet
+    full_summary = " ".join(summaries)
+    return full_summary
+
 
 if __name__ == '__main__':
     print("Start Summarization ...")
