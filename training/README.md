@@ -24,6 +24,19 @@ Three distinct approaches were employed for model training:
     * Ludwig (Fine-tuned Llama-2-7b)
 ***
 
+## More information about fine-tuning Google/mT5-small
+n this project, three models were trained and fine-tuned for abstractive summarization. The model currently deployed is the Google/mT5-small model. It has been fine-tuned with PyTorch and HuggingFace on two datasets: "Xsum" in English and "Mlsum" in French. The fine-tuning process involved extensive preprocessing, data cleaning, and hyperparameter tuning to optimize the model's performance.
+
+The choice of mT5-small was made with consideration for both efficiency and effectiveness in generating high-quality abstractive summaries. It's worth noting that the abstractive summarization task is a challenging one, as it requires the model to not only understand the content of the text but also to generate coherent and concise summaries.
+
+Additionally, the project placed a strong emphasis on multilingual summarization capabilities. This enables the model to generate summaries in both English and French, making it versatile for a wide range of applications in various linguistic contexts.
+
+The evaluation metrics for the model include Rouge scores, where we assess the quality and relevance of the generated summaries by comparing them to the reference summaries. This allows us to continually refine the model and ensure that it meets the desired standards for summarization in both languages.
+
+Overall, this project represents a significant step in the field of abstractive summarization, pushing the boundaries of what can be achieved with state-of-the-art language models."
+
+I've expanded the text and added additional information about the project's emphasis on multilingual capabilities and the use of Rouge scores for evaluation.
+
 ## More information about Ludwig and Llama-2-7b
 * [Ludwig](https://ludwig.ai/latest/)
 
