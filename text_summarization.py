@@ -136,7 +136,7 @@ def generate_abstractive_summary(hub_model_id, text, max_length=150, min_length=
             summary = model.generate(
                 tokenizer.encode(" ".join(sentences_to_summarize), return_tensors="pt"),
                 max_length=max_length,
-                min_length=20,
+                min_length=25,
                 num_beams=5,  # Augmenter num_beams pour des résumés de meilleure qualité
                 early_stopping=True,  # Assurez-vous que la génération se termine correctement
             )[0]
