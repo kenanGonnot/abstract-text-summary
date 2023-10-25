@@ -1,5 +1,5 @@
 ## Training
-Two distinct approaches were employed for model training:
+Three distinct approaches were employed for model training:
 
 * **Transformer Encoder-Decoder Model (From Scratch):** We trained a Transformer-based encoder-decoder model from scratch on a
   diverse dataset of text documents. This model was designed to understand the nuances of the summarization task and
@@ -8,12 +8,14 @@ Two distinct approaches were employed for model training:
 * **Fine-tuning Llama-2-7b (7 Billion Parameters):** To harness the power of large pre-trained models, we fine-tuned the
   Llama-2-7b language model with the Ludwig library. This model, with its immense 7 billion parameters, offers the
   capability to generate high-quality abstractive summaries by leveraging a vast amount of prior knowledge.
+* **Fine-tuning mT5-small (280 Million Parameters):** We also fine-tuned the mT5-small language model with the HuggingFace library - Transformers. This model, with its 280 million parameters, offers the capability to generate high-quality abstractive summaries in French and English by leveraging a vast amount of prior knowledge.
 
 ***
 ### Technical information:
 * **Model Architecture:**
     * Transformer Encoder-Decoder Model
     * Fine-tuned Llama-2-7b (7 Billion Parameters)
+    * Fine-tuned mT5-small (250 Million Parameters)
 * **Dataset:** `XSum`
 * **Training Time:** 2 days
 * **Training Hardware:** 1x NVIDIA RTX 4090 GPU via [cloud GPU - VAST](https://vast.ai/)
